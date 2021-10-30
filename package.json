@@ -1,0 +1,29 @@
+{
+  "name": "trabajo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.23.0",
+    "cheerio": "^1.0.0-rc.10",
+    "csv-writer": "^1.6.0",
+    "xlsx": "^0.17.3",
+    "ajax": "0.0.4"
+  },
+  "devDependencies": {
+    "http-server": "^13.0.2"
+  },
+  "scripts": {
+    "start": "http-server MAIN/",
+    "etl:api": "node src/etl-api.js",
+    "etl:pablo": "node src/pablo.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ETL",
+    "NodeJS",
+    "XLSX"
+  ],
+  "author": "Federico Natho",
+  "license": "ISC"
+}
