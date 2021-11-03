@@ -7,7 +7,7 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter; // Para gen
 
 // Definir archivo de origen
 let rawdata = fs.readFileSync('output/energia.json');
-let hoja_json = JSON.parse(rawdata);
+let hoja_json = JSON.parse(rawdata)["data"];
 
 
 // Definir filtros
@@ -41,8 +41,8 @@ for (let idx = 0; idx < hoja_json.length; idx++) {
       - REGION
       - COMUNAS
     */
-    let region_hoja = hoja_json[idx].REGION; // Obtiene el valor de la columna REGION
-    let comuna_hoja = hoja_json[idx].COMUNA; // Obtiene el valor de la columna COMUNA
+    let region_hoja = hoja_json[idx][8]; // Obtiene el valor de la columna REGION
+    let comuna_hoja = hoja_json[idx][6]; // Obtiene el valor de la columna COMUNA
 
     // Validar condición que la fila leida coincida con los filtros requeridos.
     // Ya que la variable COMMUNES es un arreglo, se una un método para validar.
@@ -53,23 +53,36 @@ for (let idx = 0; idx < hoja_json.length; idx++) {
         // Obtener el registro desde la variable donde se mantendrá la transformación
         let data_comuna = output_data[comuna_hoja];
 
+        let gas_93 = parseInt(hoja_json[idx][14]);
+        let gas_95 = parseInt(hoja_json[idx][17]);
+        let gas_97 = parseInt(hoja_json[idx][15]);
+        let diesel = parseInt(hoja_json[idx][16]);
+
+        if (!gas_93) gas_93 = 0;
+        if (!gas_95) gas_95 = 0;
+        if (!gas_97) gas_97 = 0;
+        if (!diesel) diesel = 0;
+
         if (data_comuna) {
             // Si existe el registro, se aumentan los contadores
-            data_comuna['DATA']['Gasolina 93 $/L'] += hoja_json[idx]['Gasolina 93 $/L'];
-            data_comuna['DATA']['Gasolina 95 $/L'] += hoja_json[idx]['Gasolina 95 $/L'];
-            data_comuna['DATA']['Gasolina 97 $/L'] += hoja_json[idx]['Gasolina 97 $/L'];
-            data_comuna['DATA']['Petróleo Diesel $/L'] += hoja_json[idx]['Petróleo Diesel $/L'];
-            
+            data_comuna['DATA']['Gasolina 93 $/L'] += gas_93;
+            data_comuna['DATA']['Gasolina 95 $/L'] += gas_95;
+            data_comuna['DATA']['Gasolina 97 $/L'] += gas_97;
+            data_comuna['DATA']['Petróleo Diesel $/L'] += diesel;
+            data_comuna['DATA']['Entries'] += Entries;
+
         } else {
             // Al no existir registro, se establece los contadores
             data_comuna = {};
-            data_comuna['COMUNA'] = hoja_json[idx]['COMUNA'];
+            data_comuna['COMUNA'] = hoja_json[idx][6];
             data_comuna['DATA'] = {};
-            data_comuna['DATA']['COMUNA'] = hoja_json[idx]['COMUNA'];
-            data_comuna['DATA']['Gasolina 93 $/L'] += hoja_json[idx]['Gasolina 93 $/L'];
-            data_comuna['DATA']['Gasolina 95 $/L'] += hoja_json[idx]['Gasolina 95 $/L'];
-            data_comuna['DATA']['Gasolina 97 $/L'] += hoja_json[idx]['Gasolina 97 $/L'];
-            data_comuna['DATA']['Petróleo Diesel $/L'] += hoja_json[idx]['Petróleo Diesel $/L'];
+            data_comuna['DATA']['COMUNA'] = hoja_json[idx][6];
+            data_comuna['DATA']['Gasolina 93 $/L'] = gas_93;
+            data_comuna['DATA']['Gasolina 95 $/L'] = gas_95;
+            data_comuna['DATA']['Gasolina 97 $/L'] = gas_97;
+            data_comuna['DATA']['Petróleo Diesel $/L'] = diesel;
+            data_comuna['DATA']['Entries'] = Entries;
+            
         }
 
         // Se almacena en la variable la información procesada
