@@ -17,6 +17,7 @@
     "start": "http-server MAIN/",
     "etl:api": "node src/etl-api.js",
     "etl:pablo": "node src/pablo.js",
+    "etl:json": "node src/etl-json.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

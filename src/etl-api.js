@@ -34,15 +34,9 @@ let output_data = {};
 const mainfunction = async () => {
 const response = await callAPI(API_URL_FILTERS)
 const cleanResponse = response.data.replace(/\t/g,"")
-fs.writeFile("./output/energia-rm.json", cleanResponse, () => {});
-const fileData = require('./output/energia-rm.json')
+fs.writeFile("./output/energia.json", cleanResponse, () => {});
+const fileData = require('./output/energia.json')
 const parsedData= JSON.parse(fileData)
-
-
-
-//fs.writeFile("./output/energia-rm.json", JSON.stringify(output_data),() => {});
-fs.writeFile("./output/energia-rm.json", response.data, () => {});
-console.log(typeof response.data)
-console.log(JSON.parse(response.data).headers) 
 } 
 mainfunction()
+
