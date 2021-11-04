@@ -69,8 +69,7 @@ for (let idx = 0; idx < hoja_json.length; idx++) {
             data_comuna['DATA']['Gasolina 95 $/L'] += gas_95;
             data_comuna['DATA']['Gasolina 97 $/L'] += gas_97;
             data_comuna['DATA']['Petróleo Diesel $/L'] += diesel;
-            data_comuna['DATA']['Entries'] += Entries;
-
+            data_comuna['DATA']['Entries'] += (gas_93 > 0) ? 1 : 0;
         } else {
             // Al no existir registro, se establece los contadores
             data_comuna = {};
@@ -81,9 +80,9 @@ for (let idx = 0; idx < hoja_json.length; idx++) {
             data_comuna['DATA']['Gasolina 95 $/L'] = gas_95;
             data_comuna['DATA']['Gasolina 97 $/L'] = gas_97;
             data_comuna['DATA']['Petróleo Diesel $/L'] = diesel;
-            data_comuna['DATA']['Entries'] = Entries;
-            
+            data_comuna['DATA']['Entries'] = (gas_93 > 0) ? 1 : 0;
         }
+
 
         // Se almacena en la variable la información procesada
         output_data[comuna_hoja] = data_comuna;
