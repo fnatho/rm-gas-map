@@ -43,6 +43,7 @@ for (let idx = 0; idx < hoja_json.length; idx++) {
     */
     let region_hoja = hoja_json[idx][8]; // Obtiene el valor de la columna REGION
     let comuna_hoja = hoja_json[idx][6]; // Obtiene el valor de la columna COMUNA
+  
 
     // Validar condición que la fila leida coincida con los filtros requeridos.
     // Ya que la variable COMMUNES es un arreglo, se una un método para validar.
@@ -51,8 +52,8 @@ for (let idx = 0; idx < hoja_json.length; idx++) {
         // log("Datos en Hoja para [" + REGION + " - " + COMMUNES + "]", hoja_json[idx]);
 
         // Obtener el registro desde la variable donde se mantendrá la transformación
-        let data_comuna = output_data[comuna_hoja];
-
+        let data_comuna =  output_data[comuna_hoja];
+        
         let gas_93 = parseInt(hoja_json[idx][14]);
         let gas_95 = parseInt(hoja_json[idx][17]);
         let gas_97 = parseInt(hoja_json[idx][15]);
@@ -99,3 +100,49 @@ Generar archivo JSON
 const json_file = path.resolve("output/energia-rm.json");
 // Guardar en JSON los datos transformados 
 fs.writeFileSync(json_file, JSON.stringify(output_data));
+
+//CALCULO DEL PROMEDIO DE VALOR DE BENCINA
+// Primero convierto el objeto de energia-rm a un arreglo de objetos. De esta forma 
+/*
+[
+    {
+    "COMUNA": "Santiago Centro",
+    "DATA": {
+        "COMUNA": "Santiago Centro",
+        "Gasolina 93 $/L": 31013,
+        "Gasolina 95 $/L": 31864,
+        "Gasolina 97 $/L": 32681,
+        "Petróleo Diesel $/L": 24224,
+        "Entries": 33
+    },
+    {"COMUNA": ...
+    ....
+},
+...
+] */
+
+const communesValues = Object.values(output_data)
+// se aplica método map para este arreglo de objetos. Lo que va dentro del map es una función
+// que aplica para cada objeto del arreglo
+const communesMeans = communesValues.map((element)=> {
+    const means = {
+        "PROM Gasolina 93 $/L": 0,
+        "PROM Gasolina 95 $/L": 0,
+        "PROM Gasolina 97 $/L": 0,
+        "PROM Petróleo Diesel $/L": 0,
+    }
+    const comuna = element.COMUNA
+    const entries = element.DATA.Entries
+    const mean93 = element.DATA["Gasolina 93 $/L"]/element.DATA["Entries"]
+    const mean95 = element.DATA["Gasolina 95 $/L"]/element.DATA["Entries"]
+    const mean97 = element.DATA["Gasolina 97 $/L"]/element.DATA["Entries"]
+    const meanDiesel = element.DATA["Petróleo Diesel $/L"]/element.DATA["Entries"]
+    means.COMUNA = comuna
+    means.Entries = entries
+    means["PROM Gasolina 93 $/L"] = mean93
+    means["PROM Gasolina 95 $/L"] = mean95
+    means["PROM Gasolina 97 $/L"] = mean97
+    means["PROM Petróleo Diesel $/L"] = meanDiesel
+    return means
+})
+console.log(communesMeans)
