@@ -14,7 +14,7 @@
     "http-server": "^13.0.2"
   },
   "scripts": {
-    "start": "http-server main/",
+    "start": "http-server",
     "etl:api": "node src/etl-api.js",
     "etl:pablo": "node src/pablo.js",
     "etl:json": "node src/etl-json.js",
