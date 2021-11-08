@@ -16,7 +16,7 @@
   "scripts": {
     "start": "http-server",
     "etl:api": "node src/etl-api.js",
-    "etl:pablo": "node src/pablo.js",
+    "etl:map": "node src/mapa/map.js",
     "etl:json": "node src/etl-json.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

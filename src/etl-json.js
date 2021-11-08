@@ -70,7 +70,10 @@ for (let idx = 0; idx < hoja_json.length; idx++) {
             data_comuna['DATA']['Gasolina 95 $/L'] += gas_95;
             data_comuna['DATA']['Gasolina 97 $/L'] += gas_97;
             data_comuna['DATA']['Petróleo Diesel $/L'] += diesel;
-            data_comuna['DATA']['Entries'] += (gas_93 > 0) ? 1 : 0;
+            data_comuna['DATA']['Entries93'] += (gas_93 > 0) ? 1 : 0;
+            data_comuna['DATA']['Entries95'] += (gas_95 > 0) ? 1 : 0;
+            data_comuna['DATA']['Entries97'] += (gas_97 > 0) ? 1 : 0;
+            data_comuna['DATA']['EntriesDiesel'] += (diesel > 0) ? 1 : 0;
         } else {
             // Al no existir registro, se establece los contadores
             data_comuna = {};
@@ -81,7 +84,10 @@ for (let idx = 0; idx < hoja_json.length; idx++) {
             data_comuna['DATA']['Gasolina 95 $/L'] = gas_95;
             data_comuna['DATA']['Gasolina 97 $/L'] = gas_97;
             data_comuna['DATA']['Petróleo Diesel $/L'] = diesel;
-            data_comuna['DATA']['Entries'] = (gas_93 > 0) ? 1 : 0;
+            data_comuna['DATA']['Entries93'] = (gas_93 > 0) ? 1 : 0;
+            data_comuna['DATA']['Entries95'] = (gas_95 > 0) ? 1 : 0;
+            data_comuna['DATA']['Entries97'] = (gas_97 > 0) ? 1 : 0;
+            data_comuna['DATA']['EntriesDiesel'] = (diesel > 0) ? 1 : 0;
         }
 
 
@@ -97,9 +103,9 @@ log("Data de Salida", output_data);
 Generar archivo JSON
 */
 // Definir archivo de salida (JSON)
-const json_file = path.resolve("output/energia-rm.json");
+//const json_file = path.resolve("output/energia-rm.json");
 // Guardar en JSON los datos transformados 
-fs.writeFileSync(json_file, JSON.stringify(output_data));
+//fs.writeFileSync(json_file, JSON.stringify(output_data));
 
 //CALCULO DEL PROMEDIO DE VALOR DE BENCINA
 // Primero convierto el objeto de energia-rm a un arreglo de objetos. De esta forma 
@@ -126,23 +132,36 @@ const communesValues = Object.values(output_data)
 // que aplica para cada objeto del arreglo
 const communesMeans = communesValues.map((element)=> {
     const means = {
-        "PROM Gasolina 93 $/L": 0,
-        "PROM Gasolina 95 $/L": 0,
-        "PROM Gasolina 97 $/L": 0,
-        "PROM Petróleo Diesel $/L": 0,
+        "bencina93": 0,
+        "bencina95": 0,
+        "bencina97": 0,
+        "diesel": 0,
     }
     const comuna = element.COMUNA
-    const entries = element.DATA.Entries
-    const mean93 = element.DATA["Gasolina 93 $/L"]/element.DATA["Entries"]
-    const mean95 = element.DATA["Gasolina 95 $/L"]/element.DATA["Entries"]
-    const mean97 = element.DATA["Gasolina 97 $/L"]/element.DATA["Entries"]
-    const meanDiesel = element.DATA["Petróleo Diesel $/L"]/element.DATA["Entries"]
+    const entries93 = element.DATA.Entries93
+    const entries95 = element.DATA.Entries95
+    const entries97 = element.DATA.Entries97
+    const entriesdiesel = element.DATA.EntriesDiesel
+
+    const mean93 = element.DATA["Gasolina 93 $/L"]/element.DATA["Entries93"]
+    const mean95 = element.DATA["Gasolina 95 $/L"]/element.DATA["Entries95"]
+    const mean97 = element.DATA["Gasolina 97 $/L"]/element.DATA["Entries97"]
+    const meanDiesel = element.DATA["Petróleo Diesel $/L"]/element.DATA["EntriesDiesel"]
     means.COMUNA = comuna
-    means.Entries = entries
-    means["PROM Gasolina 93 $/L"] = mean93
-    means["PROM Gasolina 95 $/L"] = mean95
-    means["PROM Gasolina 97 $/L"] = mean97
-    means["PROM Petróleo Diesel $/L"] = meanDiesel
+    means.Entries93 = entries93
+    means.Entries95 = entries95
+    means.Entries97 = entries97
+    means.EntriesDiesel = entriesdiesel
+
+    means["bencina93"] = mean93
+    means["bencina95"] = mean95
+    means["bencina97"] = mean97
+    means["diesel"] = meanDiesel
     return means
 })
 console.log(communesMeans)
+
+// Definir archivo de salida (JSON)
+const json_file = path.resolve("src/mapa/energia-rm.json");
+// Guardar en JSON los datos transformados 
+fs.writeFileSync(json_file, JSON.stringify(communesMeans));
