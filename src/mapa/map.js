@@ -20,18 +20,18 @@ var map = svg.append("g")
     .attr("class", "map");
 
 d3.queue()
-    .defer(d3.json, "main/src/mapa/geo.json")
-    .defer(d3.json, "main/src/mapa/energia-rm.json")
-    .await(function (error, comuna, data) {
+    .defer(d3.json, "src/mapa/geo.json")
+    .defer(d3.json, "src/mapa/energia-rm.json")
+    .await(function (error, rm, data) {
         if (error) {
             console.error('Oh dear, something went wrong: ' + error);
         }
         else {
-            drawMap(comuna, data);
+            drawMap(rm, data);
         }
     });
 
-function drawMap(comuna, data) {
+function drawMap(rm, data) {
     // geoMercator projection
     var projection = d3.geoMercator() //d3.geoOrthographic()
         .scale(130)
@@ -42,10 +42,10 @@ function drawMap(comuna, data) {
 
     //colors for population metrics
     var color = d3.scaleThreshold()
-        .domain([10000, 100000, 500000, 1000000, 5000000, 10000000, 50000000, 100000000, 500000000, 1500000000])
+        .domain([750, 800, 850, 900, 950, 1000, 1050, 1100, 1150])
         .range(["#f7fcfd", "#e0ecf4", "#bfd3e6", "#9ebcda", "#8c96c6", "#8c6bb1", "#88419d", "#810f7c", "#4d004b"]);
 
-    var features = topojson.feature(comuna, comuna.features.properties).features;
+    var features = topojson.feature(rm, rm.features).features;
     var GasValue = {};
 
     data.forEach(function (d) {
@@ -54,8 +54,7 @@ function drawMap(comuna, data) {
             bencina95 =+d.bencina95,
             bencina97 =+d.bencina97,
             diesel  =+d.diesel,
-            
-        }
+            }
     });
     features.forEach(function (d) {
         d.details = GasValue[d.NOM_COM] ? GasValue[d.NOM_COM] : {};
@@ -65,10 +64,10 @@ function drawMap(comuna, data) {
         .selectAll("path")
         .data(features)
         .enter().append("path")
-        .attr("name", function (d) {
+        .attr("NOM_COM", function (d) {
             return d.NOM_COM;
         })
-        .attr("id", function (d) {
+        .attr("COD_COMUNA", function (d) {
             return d.COD_COMUNA;
         })
         .attr("d", path)
@@ -81,14 +80,14 @@ function drawMap(comuna, data) {
                 .style("stroke-width", 1)
                 .style("cursor", "pointer");
 
-            d3.select(".country")
+            d3.select(".NOM_COM")
                 .text(d.properties.NOM_COM);
 
-            d3.select(".females")
-                .text(d.details && d.details.bencina95 && "Female " + d.details.bencina95 || "¯\\_(ツ)_/¯");
+            d3.select(".bencina93")
+                .text(d.details && d.details.bencina93 && "Female " + d.details.bencina93 || "¯\\_(ツ)_/¯");
 
-            d3.select(".males")
-                .text(d.details && d.details.bencina97 && "Male " + d.details.bencina97 || "¯\\_(ツ)_/¯");
+            d3.select(".bencina95")
+                .text(d.details && d.details.bencina95 && "Male " + d.details.bencina95 || "¯\\_(ツ)_/¯");
 
             d3.select('.details')
                 .style('visibility', "visible")

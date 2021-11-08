@@ -147,7 +147,7 @@ const communesMeans = communesValues.map((element)=> {
     const mean95 = element.DATA["Gasolina 95 $/L"]/element.DATA["Entries95"]
     const mean97 = element.DATA["Gasolina 97 $/L"]/element.DATA["Entries97"]
     const meanDiesel = element.DATA["Petróleo Diesel $/L"]/element.DATA["EntriesDiesel"]
-    means.COMUNA = comuna
+    means.NOM_COM = comuna
     means.Entries93 = entries93
     means.Entries95 = entries95
     means.Entries97 = entries97
