@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "ajax": "0.0.4",
     "axios": "^0.23.0",
     "cheerio": "^1.0.0-rc.10",
     "csv-writer": "^1.6.0",
-    "xlsx": "^0.17.3",
-    "ajax": "0.0.4"
+    "topojson-server": "^3.0.1",
+    "xlsx": "^0.17.3"
   },
   "devDependencies": {
     "http-server": "^13.0.2"

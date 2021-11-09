@@ -8,6 +8,7 @@ var svg = d3.select("body")
 svg.attr("viewBox", "50 10 " + width + " " + height)
     .attr("preserveAspectRatio", "xMinYMin");
 
+    
 var zoom = d3.zoom()
     .on("zoom", function () {
         var transform = d3.zoomTransform(this);
@@ -16,22 +17,23 @@ var zoom = d3.zoom()
 
 svg.call(zoom);
 
+
 var map = svg.append("g")
     .attr("class", "map");
 
 d3.queue()
     .defer(d3.json, "src/mapa/geo.json")
     .defer(d3.json, "src/mapa/energia-rm.json")
-    .await(function (error, rm, data) {
+    .await(function (error, properties, data) {
         if (error) {
             console.error('Oh dear, something went wrong: ' + error);
         }
         else {
-            drawMap(rm, data);
+            drawMap(properties, data);
         }
     });
 
-function drawMap(rm, data) {
+function drawMap(properties, data) {
     // geoMercator projection
     var projection = d3.geoMercator() //d3.geoOrthographic()
         .scale(130)
@@ -45,15 +47,15 @@ function drawMap(rm, data) {
         .domain([750, 800, 850, 900, 950, 1000, 1050, 1100, 1150])
         .range(["#f7fcfd", "#e0ecf4", "#bfd3e6", "#9ebcda", "#8c96c6", "#8c6bb1", "#88419d", "#810f7c", "#4d004b"]);
 
-    var features = topojson.feature(rm, rm.features).features;
+    var features = topojson.feature(properties, properties.features).features;
     var GasValue = {};
 
     data.forEach(function (d) {
-        GasValue[d.NOM_COM] = {
-            bencina93 =+d.bencina93,
-            bencina95 =+d.bencina95,
-            bencina97 =+d.bencina97,
-            diesel  =+d.diesel,
+        GasValue[d.nom_com] = {
+            bencina93 =+ d.bencina93,
+            bencina95 =+ d.bencina95,
+            bencina97 =+ d.bencina97, 
+            diesel  =+ d.diesel,
             }
     });
     features.forEach(function (d) {
@@ -84,10 +86,10 @@ function drawMap(rm, data) {
                 .text(d.properties.NOM_COM);
 
             d3.select(".bencina93")
-                .text(d.details && d.details.bencina93 && "Female " + d.details.bencina93 || "¯\\_(ツ)_/¯");
+                .text(d.details && d.details.bencina93 && "bencina93 " + d.details.bencina93 || "¯\\_(ツ)_/¯");
 
             d3.select(".bencina95")
-                .text(d.details && d.details.bencina95 && "Male " + d.details.bencina95 || "¯\\_(ツ)_/¯");
+                .text(d.details && d.details.bencina95 && "bencina95" + d.details.bencina95 || "¯\\_(ツ)_/¯");
 
             d3.select('.details')
                 .style('visibility', "visible")
