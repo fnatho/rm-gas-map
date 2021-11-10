@@ -47,15 +47,18 @@ function drawMap(properties, data) {
         .domain([750, 800, 850, 900, 950, 1000, 1050, 1100, 1150])
         .range(["#f7fcfd", "#e0ecf4", "#bfd3e6", "#9ebcda", "#8c96c6", "#8c6bb1", "#88419d", "#810f7c", "#4d004b"]);
 
-    var features = topojson.feature(properties, properties.features).features;
+
+        //console.log("features", properties)
+    var features = topojson.feature(properties.features).features;
     var GasValue = {};
+        console.log(features)
 
     data.forEach(function (d) {
         GasValue[d.nom_com] = {
-            bencina93 =+ d.bencina93,
-            bencina95 =+ d.bencina95,
-            bencina97 =+ d.bencina97, 
-            diesel  =+ d.diesel,
+            bencina93 : d.bencina93,
+            bencina95 : d.bencina95,
+            bencina97 : d.bencina97, 
+            diesel  : d.diesel,
             }
     });
     features.forEach(function (d) {
