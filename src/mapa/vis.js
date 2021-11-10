@@ -10,6 +10,7 @@ let canvas = d3.select('#canvas')
 let drawMap = () => {
 
 }
+console.log(d3.json(rmLink))
 
 d3.json(rmLink).then(
     (data, error) => {
