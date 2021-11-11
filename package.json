@@ -20,6 +20,7 @@
     "etl:api": "node src/etl-api.js",
     "etl:map": "node src/mapa/map.js",
     "etl:json": "node src/etl-json.js",
+    "etl:fetch": "node src/fetch.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

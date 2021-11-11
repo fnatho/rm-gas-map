@@ -21,4 +21,4 @@ return feature
 }
 )
 geojson.features = parsedfeatures 
-fs.writeFileSync("./results.json", JSON.stringify(geojson));
+fs.writeFileSync("src/mapa/results.json", JSON.stringify(geojson));

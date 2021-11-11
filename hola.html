@@ -1,3 +1,19 @@
+<!DOCTYPE html><html>
+<meta charset="utf-8" />
+<head>
+	<script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+
+ <style>
+  #map { 
+  height: 800px; }
+ </style>
+ 
+ </head>
+  <body>
+   <div id="map"></div>
+ <script>
+ 
 var map = L.map('map').
 setView([-33.4534628, -70.7493761], 
 11);
@@ -12,7 +28,11 @@ const marker = L.marker([41.66, -4.71], {draggable: true})
 marker.bindPopup('sada')
 marker.addTo(map);
 
-var latlngs = [[41.6, -4.7],[41.6, -4.7],[41.5, -4.5],[41.7, -4.81]];
+var latlngs = [[-33.534628, -70.7493761],[-33.47, -70.75],[-33.44, -70.37]]; //aca tendría que ir el geo.json.features.geometry
 const poly = L.polygon(latlngs, {color: 'red'})
 poly.bindPopup('ladjksaklda')
 poly.addTo(map);
+
+ </script>
+ </body> 
+ </html>
