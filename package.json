@@ -23,7 +23,7 @@
     "etl:map": "node src/mapa/map.js",
     "etl:json": "node src/etl-json.js",
     "etl:fetch": "node src/fetch.js",
-    "all": "npm run etl:api && npm run etl:json && npm run etl:fetch && npm run start",
+    "all": "npm run etl:api && timeout 3 && npm run etl:json && timeout 3 && npm run etl:fetch && timeout 3 && npm run start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
