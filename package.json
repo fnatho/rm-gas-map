@@ -18,6 +18,7 @@
   },
   "scripts": {
     "start": "http-server",
+    "start2": "http-server ./src/mapa/results.js -p 8081",
     "etl:api": "node src/etl-api.js",
     "etl:map": "node src/mapa/map.js",
     "etl:json": "node src/etl-json.js",
