@@ -32,14 +32,33 @@
     }
     #map { 
   height: 800px; 
+  margin-top: 0px;
+margin-right: 10px;
+margin-bottom: 0px;
+margin-left: 10px;
 }
+
+.legend {
+    line-height: 18px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
   </style>
 
-  <title>Valores Bencina Región Metropolitana</title>
+  <title>Valores Combustible Región Metropolitana</title>
 
 </head>
 
-<body>
+<body style="background-color:#9ca6adb9;" >
+
+  
   <!-- Barra Inicio -->
   <nav class="navbar navbar-light" style="background-color: #306d96ad;">
     <a class="navbar-brand" href="#">Comisión Nacional Energía</a>
@@ -68,11 +87,26 @@
 
   <!-- Mapa -->
   
-  <h2>Promedio de precio de combustibles</h2>
+  <h5 class="fixed-default navbar-light" style="background-color: #306d96ad;">
+    <form > Valores de combustible en RM por comuna
+    
+    </form>
+  </h5>
+
   <div id="map"></div>
       <script src="./src/mapa/map.js"> 
    
   </script>
+
+
+
+
+<nav class="fixed-bottom navbar-light" style="background-color: #306d96ad;">
+    <p > @FedericoNatho
+    
+    </p>
+</nav>
+
 
 </body>
 
