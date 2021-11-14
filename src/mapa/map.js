@@ -23,6 +23,74 @@ L.tileLayer('	https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{
 L.control.scale().addTo(map);
 
 // ingresar geojson
+// Tabla contenido
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    console.log(props)
+    let description;
+    if (props) {
+
+    
+    const gas93 = props.bencina93
+            const gas95 = props.bencina95
+            const gas97 = props.bencina97
+            const diesel = props.diesel
+            const comuna = props["NOM_COM"]
+            const gas93Text = `Bencina 93: $ ${gas93} pesos`
+            const gas95Text = `Bencina 95: $ ${gas95} pesos`
+            const gas97Text = `Bencina 97: $ ${gas97} pesos`
+            const dieselText = `Diesel: $ ${diesel} pesos`
+            const comunaText = `Comuna: ${comuna}`
+            const text = [comunaText, "Valores promedio:", gas93Text, gas95Text, gas97Text, dieselText]
+            description = text.join("<br/>");
+        }
+    this._div.innerHTML = '<h4>Valores Combustibles</h4>' +  (props ?
+        description
+        : 'Mueva el cursor');
+};
+
+info.addTo(map); 
+
+function resetHighlight(e) {
+    geojson.resetStyle(e.target);
+    info.update()
+}
+var geojson;
+
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+    info.update(layer.feature.properties)
+}
+
+function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+}
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+    });
+}
 
 let myRequest = new Request("/src/mapa/results.json")
 
@@ -31,7 +99,7 @@ fetch(myRequest)
         return resp.json();
     })
     .then(function (data) {
-        L.geoJSON(data, {
+        geojson= L.geoJSON(data, {
             style: function (feature) {
                 if (!feature.properties.bencina93) {
                     console.log(feature.properties["NOM_COM"])
@@ -43,8 +111,10 @@ fetch(myRequest)
                     dashArray: '700',
                     fillOpacity: 0.77,
                     fillColor: getColor(feature.properties.bencina93)
-                };
-            }
+                }
+            },
+            onEachFeature: onEachFeature
+            
         }).bindPopup(function (layer) {
             const gas93 = layer.feature.properties.bencina93
             const gas95 = layer.feature.properties.bencina95
@@ -59,11 +129,8 @@ fetch(myRequest)
             const text = [comunaText, "Valores promedio:", gas93Text, gas95Text, gas97Text, dieselText]
             return text.join("<br/>");
         })
-        
-        
-        .addTo(map);
-        
-
+              
+        .addTo(map);     
     })
     ;
 //Leyenda
@@ -88,20 +155,5 @@ legend.onAdd = function (map) {
 legend.addTo(map);
 
 
-// Tabla contenido
-var info = L.control();
 
-info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-    this.update();
-    return this._div;
-};
 
-// method that we will use to update the control based on feature properties passed
-info.update = function (props) {
-    this._div.innerHTML = '<h4>Valores Combustibles</h4>' +  (props ?
-        '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-        : 'Mueva el cursor');
-};
-
-info.addTo(map);
