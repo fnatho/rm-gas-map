@@ -55,7 +55,7 @@ info.update = function (props) {
     this._div.innerHTML = '<h4>Valores Combustibles</h4>' +  (props ?
         description
         : 'Mueva el cursor');
-};
+}
 
 info.addTo(map); 
 
